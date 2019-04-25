@@ -12,6 +12,9 @@ var zlib = require("zlib");
 var glob = require( 'glob' )
   , path = require( 'path' );
 
+  const Freemarker = require('freemarker');
+  const freemarkerFile = new Freemarker({ root: __dirname });  
+
 // ----- Configuration -----
 
 program
@@ -36,6 +39,44 @@ program
     .action(() => {
         console.log(fs.realpathSync(__dirname));
     });
+
+    program
+    .command('add-component <name>')
+    .description('To add new component for CLI')
+    .action((name) => {
+
+        let componentDir = path.join(workspaceDir, 'components');
+        process.chdir(componentDir);
+
+        if (fs.existsSync(name)) {
+            console.log("Component " + name + " already exist.");
+            return;
+        }
+
+        fs.mkdirSync(name);
+        process.chdir(name);
+
+        let data = {
+            component: name
+        }
+
+        freemarkerFile.renderFile(path.join(workspaceDir,'core', 'base.ftl'), data, (err, result) => {
+            if (err) {
+                throw new Error(err);
+            }
+
+            // add flag wx to prevent overriding existing file
+            fs.writeFile(name + ".js", result, { flag: 'wx' }, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("Created component " + name);
+                }
+            });
+
+        });
+    });
+
 
 //-- sample program
 // program

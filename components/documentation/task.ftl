@@ -6,9 +6,6 @@ ${title}
 @CreatedDate : ${date}
 @Description : ${description}
 
-Arrived :
-Go back : 
-
 ---------- Content ---------------
 
 1. Getting Started
