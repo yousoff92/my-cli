@@ -32,4 +32,6 @@ npm install -g
   - module_name_2
     - module_name_2.js
     
-2. The module_name_1.js structure must follow base.js    
+2. The module_name_1.js structure must follow base.ftl
+
+or you can just run `my add-component <component_name>`
